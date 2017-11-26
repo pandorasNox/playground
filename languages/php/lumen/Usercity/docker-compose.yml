@@ -1,0 +1,20 @@
+version: "3.2"
+
+services:
+    httpserver: #nginx docker container
+        image: nginx:alpine
+        volumes:
+            - ./docker/nginx/conf:/etc/nginx/conf
+            - ./docker/nginx/logs:/var/log/nginx
+            - .:/source
+        ports:
+            - "33080:80"
+        expose:
+            - "80"
+            - "443"
+#     php-fpm:
+    # usercityapp:
+    #     expose:
+    #         - "9000"
+
+# networks:
