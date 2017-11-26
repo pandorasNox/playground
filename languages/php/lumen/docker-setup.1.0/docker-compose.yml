@@ -12,9 +12,11 @@ services:
         expose:
             - "80"
             - "443"
-#     php-fpm:
-    # usercityapp:
-    #     expose:
-    #         - "9000"
+    phpapp:
+        image: 7.1.11-fpm-alpine3.4
+        volumes:
+            - .:/source
+        expose:
+            - "9000"
 
 # networks:
