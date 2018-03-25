@@ -1,0 +1,52 @@
+version: '3.2'
+
+services:
+   rabbit:
+      image: rabbitmq:3.7.4-management-alpine
+      ports:
+         - '8080:15672'
+      expose:
+         - '5672'
+      #    - '15672'
+      hostname: 'my-rabbit'
+      environment:
+         - RABBITMQ_DEFAULT_USER=user
+         - RABBITMQ_DEFAULT_PASS=password
+         #- RABBITMQ_DEFAULT_VHOST=my_vhost
+      volumes:
+         - ./docker/rabbitmq/data/log:/data/log
+         - ./docker/rabbitmq/data/mnesia:/data/mnesia
+      networks:
+         n_base:
+            aliases:
+               - "rabbit"
+
+   nodepublisher:
+      # image: node:8.10.0-alpine
+      build:
+         context: ./docker/nodepublisher
+         # dockerfile: Dockerfile-alternate
+         # args:
+         #    buildno: 1
+      command: tail -F anything
+      networks:
+         n_base:
+      # volumes:
+      #    - ./docker/nodepublisher:/temp
+
+   nodeconsumer:
+      # image: node:8.10.0-alpine
+      build:
+         context: ./docker/nodeconsumer
+         # dockerfile: Dockerfile-alternate
+         # args:
+         #    buildno: 1
+      command: tail -F anything
+      networks:
+         n_base:
+      # volumes:
+      #    - ./docker/nodeconsumer:/temp
+
+networks:
+   n_base:
+      driver: bridge

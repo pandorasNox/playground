@@ -1,0 +1,12 @@
+{
+   "name": "rabbitmq-tutorial-01",
+   "description": "Rabbit MQ Tutorial One",
+   "version": "0.0.1",
+   "dependencies": {
+      "amqp": "0.2.6",
+      "amqplib": "0.5.1"
+   },
+   "scripts": {
+      "receive": "node receive.js"
+   }
+}
