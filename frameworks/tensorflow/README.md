@@ -8,6 +8,10 @@
     - `docker pull tensorflow/tensorflow`
 - `docker pull tensorflow/tensorflow:1.4.1-py3`
 - `docker run -it -p 8888:8888 tensorflow/tensorflow:1.4.1-py3`
+- `docker run -it -p 60888:8888 -p 60889:6006 -v $(pwd)/notebooks:/notebooks/local tensorflow/tensorflow:1.4.1-py3`
+- tensorboard
+    - `docker exec -it tf_container_name bash`
+    - e.g. `tensorboard --logdir=tf_files/training_summaries`
 - follow instructions in cli
     > Copy/paste this URL into your browser when you connect for the first time,
     to login with a token:
