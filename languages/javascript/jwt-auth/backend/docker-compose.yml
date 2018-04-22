@@ -1,0 +1,68 @@
+version: "3.2"
+
+services:
+    proxy:
+        build:
+            context: docker/nginx/
+        ports:
+            - '22080:22080'
+            - '22443:443'
+        expose:
+            - "80"
+            - "443"
+        volumes:
+            - ./docker/nginx/conf:/etc/nginx/conf
+            - ./docker/nginx/logs:/var/log/nginx
+        entrypoint: ./entrypoint.sh
+        env_file:
+            - .env
+        depends_on:
+            - node
+        networks:
+            network_app:
+
+    node:
+        image: node:8.11.1-alpine
+        expose:
+            - "3000"
+        volumes:
+            - .:/source
+        env_file:
+            - .env
+        # command: "sh -c 'cd /source && npm install && node server.js'"
+        command: "sh -c 'cd /source && npm install && npm run start-dev'"
+        healthcheck:
+            test: ["CMD", "node", "/source/docker/node/health.js"]
+            interval: 1m30s
+            timeout: 10s
+            retries: 3
+            #start_period: 40s
+        networks:
+            network_app:
+            network_db:
+
+    mongo:
+        #container_name: mongo
+        image: mongo
+        volumes:
+            - ./data:/data/db
+        ports:
+            - "27017:27017"
+        expose:
+            - "27017"
+        healthcheck:
+            test: ["CMD", "sh", "/source/docker/mongo/health.sh"]
+            interval: 1m30s
+            timeout: 10s
+            retries: 3
+            #start_period: 40s
+        networks:
+            network_db:
+                aliases:
+                    - "mongo"
+
+networks:
+    network_app:
+        driver: bridge
+    network_db:
+        driver: bridge
