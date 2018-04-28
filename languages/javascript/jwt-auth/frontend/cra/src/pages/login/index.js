@@ -2,12 +2,11 @@
 import React, { Component, Fragment } from 'react';
 import { GlobalContext } from './../../contexts';
 import { Link } from 'react-router-dom';
+import { Default as DefaultTheme } from './../../themes';
+
 
 const Login = ({children}) => (
-    <Fragment>
-        <Link to="/" >Home</Link>
-        <br />
-        <Link to="/secret" >Secret</Link>
+    <DefaultTheme>
         <h1>Login</h1>
         {children}
         <GlobalContext.GlobalConsumer>
@@ -21,7 +20,7 @@ const Login = ({children}) => (
                 </Fragment>
             )}
         </GlobalContext.GlobalConsumer>
-    </Fragment>
+    </DefaultTheme>
 );
 
 export default Login;
